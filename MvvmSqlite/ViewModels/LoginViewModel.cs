@@ -1,5 +1,6 @@
 ﻿using HandyControl.Controls;
 using MvvmSqlite.BLL;
+using MvvmSqlite.Model;
 using Prism.Commands;
 using Prism.Mvvm;
 using System;
@@ -15,37 +16,32 @@ namespace MvvmSqlite.ViewModels
 {
     public class LoginViewModel : BindableBase
     {
-        private string _username = "yhh01";
-        private string _password;
-
+        private LoginModel loginModel = new LoginModel();
         public LoginViewModel()
         {
         }
-        public string Username { get => _username; set => SetProperty(ref _username, value); }
-        public string Password { get => _password; set => SetProperty(ref _password, value); }
+
+        public LoginModel LoginModel { get => loginModel; set => SetProperty(ref loginModel, value); }
         public ICommand LoginCommand
         {
             get => new DelegateCommand<object>(Login);
         }
         public void Login(object obj)
         {
-            if (Username == null || Password == null)
+            if (string.IsNullOrEmpty(LoginModel.username) || string.IsNullOrEmpty(LoginModel.password))
             {
                 Growl.Error($"请输入账号或者密码");
                 return;
             }
 
-            var result= new LoginBLL().Login(new Model.LoginModel() 
-            { password = Password, username = Username });
-            if(result.Result)
-            {
-                // 关闭登录窗口，并且 DialogResult返回True；
-                (obj as Window).DialogResult = true;
-            }
-            else
+            var result = new LoginBLL().Login(LoginModel);
+            if (!result.Result)
             {
                 Growl.Error($"请输入账号或者密码输入错误");
+                return;
             }
+            // 关闭登录窗口，并且 DialogResult返回True；
+            (obj as Window).DialogResult = true;
         }
     }
 }
