@@ -32,6 +32,7 @@ namespace MvvmSqlite.ViewModels
             if (Username == null || Password == null)
             {
                 Growl.Info($"请输入账号或者密码");
+                return;
             }
 
             var result= new LoginBLL().Login(new Model.LoginModel() 
@@ -40,6 +41,10 @@ namespace MvvmSqlite.ViewModels
             {
                 // 关闭登录窗口，并且 DialogResult返回True；
                 (obj as Window).DialogResult = true;
+            }
+            else
+            {
+                Growl.Info($"请输入账号或者密码输入错误");
             }
         }
     }
