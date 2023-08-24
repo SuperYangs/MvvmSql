@@ -20,9 +20,18 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
-            <RowDefinition Height="auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <DockPanel />
+        <DockPanel Grid.Row="0">
+            <!--<iconPacks:PackIconFontAwesome Kind="MicroscopeSolid" />-->
+            <Viewbox>
+                <Image
+                    Width="{Binding RelativeSource={RelativeSource Self}, Path=Source.PixelWidth}"
+                    Height="{Binding RelativeSource={RelativeSource Self}, Path=Source.PixelHeight}"
+                    Source="pack://application:,,,/Resource/LoginBack.jpg"
+                    Stretch="None" />
+            </Viewbox>
+        </DockPanel>
         <StackPanel
             Grid.Row="1"
             HorizontalAlignment="Center"
