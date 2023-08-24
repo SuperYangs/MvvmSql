@@ -14,7 +14,7 @@ namespace MvvmSqlite.ViewModels
     public class LoginViewModel : BindableBase
     {
         private string _username = "yhh01";
-        private string _password = "000000";
+        private string _password;
 
         public LoginViewModel()
         {

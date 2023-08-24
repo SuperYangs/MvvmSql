@@ -7,6 +7,7 @@
     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:local="clr-namespace:MvvmSqlite.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:password="clr-namespace:MvvmSqlite.Helper"
     xmlns:prism="http://prismlibrary.com/"
     Title="登录系统"
     Width="500"
@@ -45,12 +46,12 @@
                 Margin="10"
                 Style="{StaticResource TextBlockSubTitle}"
                 Text="密码" />
-            <hc:TextBox
+            <hc:PasswordBox
                 Width="120"
                 Margin="10"
                 hc:InfoElement.Placeholder="请输入密码"
-                Text="{Binding Password}" />
-
+                password:PasswordBoxHelper.Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <!--  Text="{Binding Password}"  -->
         </StackPanel>
         <StackPanel
             Grid.Row="3"
