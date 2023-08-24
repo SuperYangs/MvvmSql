@@ -51,7 +51,6 @@
                 Margin="10"
                 hc:InfoElement.Placeholder="请输入密码"
                 password:PasswordBoxHelper.Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            <!--  Text="{Binding Password}"  -->
         </StackPanel>
         <StackPanel
             Grid.Row="3"
