@@ -13,7 +13,7 @@ namespace MvvmSqlite.ViewModels
     public class MainWindowViewModel : BindableBase
     {
         private ObservableCollection<StudentModel> gridModelList;
-        private string _title = "Prism Application";
+        private string _title = "学生系统";
         private string searchName = string.Empty;
         private string searchSex = string.Empty;
         private StudentBLL studentBLL;
