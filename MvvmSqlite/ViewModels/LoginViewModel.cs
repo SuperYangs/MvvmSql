@@ -1,4 +1,5 @@
-﻿using MvvmSqlite.BLL;
+﻿using HandyControl.Controls;
+using MvvmSqlite.BLL;
 using Prism.Commands;
 using Prism.Mvvm;
 using System;
@@ -8,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using Window = System.Windows.Window;
 
 namespace MvvmSqlite.ViewModels
 {
@@ -29,7 +31,7 @@ namespace MvvmSqlite.ViewModels
         {
             if (Username == null || Password == null)
             {
-                throw new Exception("请输入账号或者密码！");
+                Growl.Info($"请输入账号或者密码");
             }
 
             var result= new LoginBLL().Login(new Model.LoginModel() 
