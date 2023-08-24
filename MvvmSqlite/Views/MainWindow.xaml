@@ -1,0 +1,127 @@
+﻿<Window
+    x:Class="MvvmSqlite.Views.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:hc="https://handyorg.github.io/handycontrol"
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+    xmlns:local="clr-namespace:MvvmSqlite.Converter"
+    xmlns:mvvmsqlite="clr-namespace:MvvmSqlite"
+    xmlns:prism="http://prismlibrary.com/"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    Title="{Binding Title}"
+    Width="800"
+    Height="450"
+    prism:ViewModelLocator.AutoWireViewModel="True"
+    WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <local:MultiBindContentConverter x:Key="Content" />
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <StackPanel
+            Grid.Row="0"
+            VerticalAlignment="Center"
+            Orientation="Horizontal">
+            <Button
+                Margin="20,5,5,5"
+                Command="{Binding FindAllCommand}"
+                Style="{StaticResource ButtonInfo}">
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="查询所有" />
+                        <iconPacks:PackIconVaadinIcons Margin="5,0,0,0" Kind="FileSearch" />
+                    </StackPanel>
+                </Button.Content>
+            </Button>
+            <hc:TextBox
+                Width="80"
+                Margin="50,5,5,5"
+                hc:InfoElement.Placeholder="请输入名字"
+                hc:InfoElement.ShowClearButton="True"
+                Text="{Binding SearchName}" />
+            <Button
+                Margin="5"
+                Command="{Binding FindNameCommand}"
+                Content="名字查询"
+                Style="{StaticResource ButtonInfo}" />
+            <ComboBox
+                x:Name="cmb_SexSelect"
+                Width="60"
+                Margin="10,5,5,5"
+                SelectedIndex="0"
+                Text="{Binding SearchSex}">
+                <ComboBoxItem Content="男" />
+                <ComboBoxItem Content="女" />
+            </ComboBox>
+            <Button
+                Margin="5"
+                Command="{Binding FindSexCommand}"
+                Content="性别查询"
+                Style="{StaticResource ButtonInfo}" />
+            <Button
+                Margin="5"
+                Command="{Binding AddCommand}"
+                Content="增  加"
+                Style="{StaticResource ButtonInfo}" />
+        </StackPanel>
+        <DockPanel Grid.Row="1">
+            <DataGrid
+                HorizontalAlignment="Center"
+                AutoGenerateColumns="False"
+                CanUserAddRows="False"
+                ColumnWidth="*"
+                ItemsSource="{Binding GridModelList}"
+                RowHeaderWidth="0">
+                <DataGrid.Columns>
+                    <DataGridTextColumn
+                        Binding="{Binding Id}"
+                        Header="序号"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Binding="{Binding Name}"
+                        Header="名字"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Binding="{Binding Age}"
+                        Header="年龄"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Binding="{Binding Sex}"
+                        Header="性别"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn Binding="{Binding Class, Mode=TwoWay}" Header="班级" />
+                    <DataGridTemplateColumn Header="操作">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                                    <Button
+                                        Margin="5"
+                                        Command="{Binding DataContext.AmendCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}"
+                                        Content="修改"
+                                        Style="{StaticResource ButtonInfo}">
+                                        <Button.CommandParameter>
+                                            <MultiBinding Converter="{StaticResource Content}">
+                                                <Binding Path="Class" />
+                                                <Binding Path="Id" />
+                                            </MultiBinding>
+                                        </Button.CommandParameter>
+                                    </Button>
+                                    <Button
+                                        Margin="5"
+                                        Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}"
+                                        CommandParameter="{Binding Path=Id}"
+                                        Content="删除"
+                                        Style="{StaticResource ButtonInfo}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </DockPanel>
+        <!--<ContentControl prism:RegionManager.RegionName="ContentRegion" />-->
+    </Grid>
+</Window>
