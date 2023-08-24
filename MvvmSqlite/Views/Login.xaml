@@ -46,11 +46,13 @@
                 Margin="10"
                 Style="{StaticResource TextBlockSubTitle}"
                 Text="密码" />
-            <hc:TextBox
+            <PasswordBox
                 Width="120"
                 Margin="10"
                 hc:InfoElement.Placeholder="请输入密码"
-                Text="{Binding Password}" />
+                password:PasswordBoxHelper.Attach="True"
+                password:PasswordBoxHelper.Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Style="{StaticResource PasswordBoxExtend}" />
         </StackPanel>
         <StackPanel
             Grid.Row="3"

@@ -1,65 +1,83 @@
-﻿using HandyControl.Interactivity;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 
 namespace MvvmSqlite.Helper
 {
-    /// <summary>
-    /// 增加Password扩展属性
-    /// </summary>
-    public class PasswordBoxHelper
+
+    public static class PasswordBoxHelper
     {
-        public static string GetPassword(DependencyObject obj)
+
+        public static readonly DependencyProperty PasswordProperty = DependencyProperty.RegisterAttached("Password", typeof(string), typeof(PasswordBoxHelper),
+                                                                                                          new FrameworkPropertyMetadata(string.Empty, OnPasswordPropertyChanged));
+        public static readonly DependencyProperty AttachProperty = DependencyProperty.RegisterAttached("Attach", typeof(bool), typeof(PasswordBoxHelper), new PropertyMetadata(false, OnAttachPropertyChanged));
+
+        private static readonly DependencyProperty IsUpdatingProperty = DependencyProperty.RegisterAttached("IsUpdating", typeof(bool), typeof(PasswordBoxHelper));
+
+
+        public static void SetAttach(DependencyObject dp, bool value)
         {
-            return (string)obj.GetValue(PasswordProperty);
+            dp.SetValue(AttachProperty, value);
         }
 
-        public static void SetPassword(DependencyObject obj, string value)
+        public static bool GetAttach(DependencyObject dp)
         {
-            obj.SetValue(PasswordProperty, value);
+            return (bool)dp.GetValue(AttachProperty);
         }
 
-        public static readonly DependencyProperty PasswordProperty =
-            DependencyProperty.RegisterAttached("Password", typeof(string), typeof(PasswordBoxHelper), new PropertyMetadata("", OnPasswordPropertyChanged));
+        public static string GetPassword(DependencyObject dp)
+        {
+            return (string)dp.GetValue(PasswordProperty);
+        }
+
+        public static void SetPassword(DependencyObject dp, string value)
+        {
+            dp.SetValue(PasswordProperty, value);
+        }
+
+        private static bool GetIsUpdating(DependencyObject dp)
+        {
+            return (bool)dp.GetValue(IsUpdatingProperty);
+        }
+
+        private static void SetIsUpdating(DependencyObject dp, bool value)
+        {
+            dp.SetValue(IsUpdatingProperty, value);
+        }
 
         private static void OnPasswordPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            PasswordBox box = sender as PasswordBox;
-            string password = (string)e.NewValue;
-            if (box != null && box.Password != password)
+            PasswordBox passwordBox = sender as PasswordBox;
+            passwordBox.PasswordChanged -= PasswordChanged;
+            if (!(bool)GetIsUpdating(passwordBox))
             {
-                box.Password = password;
+                passwordBox.Password = (string)e.NewValue;
+            }
+            passwordBox.PasswordChanged += PasswordChanged;
+        }
+
+        private static void OnAttachPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        {
+            PasswordBox passwordBox = sender as PasswordBox;
+            if (passwordBox == null)
+            {
+                return;
+            }
+            if ((bool)e.OldValue)
+            {
+                passwordBox.PasswordChanged -= PasswordChanged;
+            }
+            if ((bool)e.NewValue)
+            {
+                passwordBox.PasswordChanged += PasswordChanged;
             }
         }
-    }
 
-    /// <summary>
-    /// 接收PasswordBox的密码修改事件
-    /// </summary>
-    public class PasswordBoxBehavior : Behavior<PasswordBox>
-    {
-        protected override void OnAttached()
+        private static void PasswordChanged(object sender, RoutedEventArgs e)
         {
-            base.OnAttached();
-
-            AssociatedObject.PasswordChanged += OnPasswordChanged;
-        }
-
-        protected override void OnDetaching()
-        {
-            base.OnDetaching();
-
-            AssociatedObject.PasswordChanged -= OnPasswordChanged;
-        }
-
-        private static void OnPasswordChanged(object sender, RoutedEventArgs e)
-        {
-            PasswordBox box = sender as PasswordBox;
-            string password = PasswordBoxHelper.GetPassword(box);
-            if (box != null && box.Password != password)
-            {
-                PasswordBoxHelper.SetPassword(box, box.Password);
-            }
+            PasswordBox passwordBox = sender as PasswordBox;
+            SetIsUpdating(passwordBox, true);
+            SetPassword(passwordBox, passwordBox.Password);
+            SetIsUpdating(passwordBox, false);
         }
     }
 }
