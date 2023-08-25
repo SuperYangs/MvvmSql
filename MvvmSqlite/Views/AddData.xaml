@@ -40,7 +40,7 @@
                 Margin="5,5,10,5"
                 HorizontalAlignment="Left"
                 IsEnabled="False"
-                Text="{Binding Id}" />
+                Text="{Binding StudentModel.Id}" />
         </Grid>
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
@@ -58,7 +58,7 @@
                 Width="120"
                 Margin="5,5,10,5"
                 HorizontalAlignment="Left"
-                Text="{Binding Name}" />
+                Text="{Binding StudentModel.Name}" />
         </Grid>
         <Grid Grid.Row="3">
             <Grid.ColumnDefinitions>
@@ -76,7 +76,7 @@
                 Width="120"
                 Margin="5,5,10,5"
                 HorizontalAlignment="Left"
-                Text="{Binding Age}" />
+                Text="{Binding StudentModel.Age}" />
         </Grid>
         <Grid Grid.Row="4">
             <Grid.ColumnDefinitions>
@@ -94,7 +94,7 @@
                 Width="120"
                 Margin="5,5,10,5"
                 HorizontalAlignment="Left"
-                Text="{Binding Sex}" />
+                Text="{Binding StudentModel.Sex}" />
         </Grid>
         <Grid Grid.Row="5">
             <Grid.ColumnDefinitions>
@@ -112,7 +112,7 @@
                 Width="120"
                 Margin="5,5,10,5"
                 HorizontalAlignment="Left"
-                Text="{Binding Class}" />
+                Text="{Binding StudentModel.Class}" />
         </Grid>
         <StackPanel
             Grid.Row="6"

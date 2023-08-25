@@ -30,9 +30,7 @@ namespace MvvmSqlite.ViewModels
             get { return gridModelList; }
             set
             {
-                gridModelList = value;
-                //SetProperty(ref gridModelList, value);
-                RaisePropertyChanged();
+                SetProperty(ref gridModelList, value);
             }
         }
 
