@@ -4,8 +4,11 @@ using MvvmSqlite.Model;
 using Prism.Commands;
 using Prism.Mvvm;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -20,12 +23,20 @@ namespace MvvmSqlite.ViewModels
         public LoginViewModel()
         {
         }
-
-        public LoginModel LoginModel { get => loginModel; set => SetProperty(ref loginModel, value); }
+        
+        public LoginModel LoginModel
+        {
+            get => loginModel;
+            set
+            {
+                SetProperty(ref loginModel, value);
+            }
+        }
         public ICommand LoginCommand
         {
             get => new DelegateCommand<object>(Login);
         }
+
         public void Login(object obj)
         {
             if (string.IsNullOrEmpty(LoginModel.username) || string.IsNullOrEmpty(LoginModel.password))
@@ -37,7 +48,7 @@ namespace MvvmSqlite.ViewModels
             var result = new LoginBLL().Login(LoginModel);
             if (!result.Result)
             {
-                Growl.Error($"请输入账号或者密码输入错误");
+                Growl.Error($"账号或者密码输入错误");
                 return;
             }
             // 关闭登录窗口，并且 DialogResult返回True；

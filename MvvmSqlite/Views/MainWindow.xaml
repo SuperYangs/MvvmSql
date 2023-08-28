@@ -41,7 +41,7 @@
                 Margin="50,5,5,5"
                 hc:InfoElement.Placeholder="请输入名字"
                 hc:InfoElement.ShowClearButton="True"
-                Text="{Binding SearchName}" />
+                Text="{Binding SearchName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
             <Button
                 Margin="5"
                 Command="{Binding FindNameCommand}"

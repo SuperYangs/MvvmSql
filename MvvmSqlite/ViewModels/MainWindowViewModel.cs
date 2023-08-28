@@ -5,18 +5,21 @@ using MvvmSqlite.Views;
 using Prism.Commands;
 using Prism.Mvvm;
 using System;
+using System.Collections;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows.Input;
 
 namespace MvvmSqlite.ViewModels
 {
-    public class MainWindowViewModel : BindableBase
+    public class MainWindowViewModel : BindableBase, INotifyDataErrorInfo
     {
         private ObservableCollection<StudentModel> gridModelList;
         private string _title = "学生系统";
         private string searchName = string.Empty;
         private string searchSex = string.Empty;
         private StudentBLL studentBLL;
+
 
         public MainWindowViewModel()
         {
@@ -42,7 +45,19 @@ namespace MvvmSqlite.ViewModels
         public string SearchName
         {
             get { return searchName; }
-            set { SetProperty(ref searchName, value); }
+            set
+            {
+                SetProperty(ref searchName, value);
+                if (value == "123")
+                {
+                    // 异常消息
+                    ErrorsContainer.SetErrors("SearchName", new string[] { "输入值无效123" });
+                }
+                else
+                {
+                    ErrorsContainer.ClearErrors("SearchName");
+                }
+            }
         }
         public string SearchSex
         {
@@ -76,6 +91,7 @@ namespace MvvmSqlite.ViewModels
         {
             get => new DelegateCommand<object>(Amend);
         }
+
 
         public void FindAll()
         {
@@ -132,6 +148,32 @@ namespace MvvmSqlite.ViewModels
                 Growl.Info($"ID为“{value[1]}”同学的班级修改为“{value[0]}”");
             }
         }
+
+        #region INotifyDataErrorInfo
+
+        public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
+        public bool HasErrors => ErrorsContainer.HasErrors;
+        public IEnumerable GetErrors(string propertyName) => ErrorsContainer.GetErrors(propertyName);
+
+        private ErrorsContainer<string> errorsContainer;
+
+        public ErrorsContainer<string> ErrorsContainer
+        {
+            get
+            {
+                if (errorsContainer == null)
+                    errorsContainer = new ErrorsContainer<string>((propName) =>
+                    {
+                        // 异常信息的处理
+                        ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propName));
+                    });
+
+                return errorsContainer;
+            }
+            set { errorsContainer = value; }
+        }
+
+        #endregion
 
     }
 }

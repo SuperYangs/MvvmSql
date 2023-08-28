@@ -44,7 +44,8 @@
                 Width="120"
                 Margin="10"
                 hc:InfoElement.Placeholder="请输入账号"
-                Text="{Binding LoginModel.username}" />
+                MaxLength="5"
+                Text="{Binding LoginModel.username, ValidatesOnNotifyDataErrors=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </StackPanel>
         <StackPanel
             Grid.Row="2"
@@ -60,7 +61,7 @@
                 Margin="10"
                 hc:InfoElement.Placeholder="请输入密码"
                 password:PasswordBoxHelper.Attach="True"
-                password:PasswordBoxHelper.Password="{Binding LoginModel.password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                password:PasswordBoxHelper.Password="{Binding LoginModel.password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
                 Style="{StaticResource PasswordBoxExtend}" />
         </StackPanel>
         <StackPanel

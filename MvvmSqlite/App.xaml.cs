@@ -15,11 +15,10 @@ namespace MvvmSqlite
         {
             return Container.Resolve<MainWindow>();
         }
-
         protected override void InitializeShell(Window shell)
         {
             var login = Container.Resolve<Login>();
-            if (login.ShowDialog()==false)
+            if (login.ShowDialog() == false)
             {
                 Application.Current?.Shutdown();
             }
